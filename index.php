@@ -24,12 +24,19 @@ p{font-size: 11px;}
 <script>
 $(document).ready(function(){
 
-    var seconds = $.cookie('totalMins') || 1200;  
+    /*
+     * config for customize minutes and alert text.
+     *
+     */
+    var minutes = 20;
+    var ask = "Booking process time is over";
+    var min_to_sec = 1200; //convert minute seconds(example: 60 = 1 min, 1200 = 20mins)
 
+    var seconds = $.cookie('totalMins') || min_to_sec;
 
     function secondPassed() {
         var minutes = Math.round((seconds - 30)/60);
-        var ask;
+      
         var remainingSeconds = seconds % 60;
 
         if (remainingSeconds < 10) {
@@ -41,9 +48,9 @@ $(document).ready(function(){
 
             if (seconds == 0) {
                 clearInterval(countdownTimer);
-                ask = window.alert("Booking process time is over");
                 if (ask) {
                     window.alert(ask);
+                    window.location.href=window.location.href;
                 }               
 
             } else {
@@ -53,8 +60,7 @@ $(document).ready(function(){
 
     var countdownTimer = setInterval(function(){
         secondPassed();
-        var date = new Date();
-        var minutes = 20; // define for timer..(example using is 20 minutes).   
+        var date = new Date(); 
         date.setTime(date.getTime() + (minutes * 60 * 1000));
         if(seconds===0){
             $.removeCookie('totalMins', { path: '/' });
